@@ -1,0 +1,12 @@
+{
+  "name": "minecraft-data-tools",
+  "private": "true",
+  "description": "minecraft-data tools",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "dependencies": {
+    "ajv": "^3.8.2",
+    "mocha": "~2.2.1"
+  }
+}

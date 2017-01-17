@@ -1,0 +1,18 @@
+{
+  "name": "nodemine",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "HittmanA",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "jwt-simple": "^0.5.1",
+    "minecraft-data": "^2.11.0",
+    "prismarine-chunk": "^1.4.0",
+    "vec3": "^0.1.3"
+  }
+}

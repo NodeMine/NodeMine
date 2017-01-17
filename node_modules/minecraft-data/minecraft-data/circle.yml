@@ -1,0 +1,5 @@
+machine:
+  node:
+    version: 0.10.28
+general:
+  build_dir: tools/js
