@@ -39,7 +39,7 @@ var server = pmp.createServer({
   name: 'MCPE;'+config.Name+';81 81;1.0.0;0;'+config.Slots
 });
 
-logger.info("Server online at "+"0.0.0.0"+":"+process.env.PORT);
+logger.info("Server online at "+config.Host+":"+config.Port);
 
 function genLoginWorld (chunkX, chunkZ) {
     let chunk = new chunk();
@@ -56,7 +56,7 @@ function genLoginWorld (chunkX, chunkZ) {
                 chunk.setBlockType(new Vector3(x, y, z), 2);
                 chunk.setSkyLight(new Vector3(x, y, z), 15);
               }
-            }
+            }else
             if(y >= 21) {
               chunk.setSkyLight(new Vector3(x, y, z), 15);
               //chunk.setBlockLight(new Vector3(x, y, z), 15);
@@ -210,14 +210,11 @@ client.on("mcpe",packet => console.log(packet, false));
 
         player.client.on('request_chunk_radius', (packet) => {
           console.log(packet);
-          //if (!player.connected_to_pc) {
-              //sconsole.log(packet);
 
           //Generate login world
           player.client.writeMCPE('chunk_radius_update', {
               chunk_radius: 22
           });
-          return;
 
           for (let x = -2; x <= 2; x++) {
               for (let z = -2; z <= 2; z++) {
@@ -230,13 +227,13 @@ client.on("mcpe",packet => console.log(packet, false));
               }
           }
           //return;
-          /*
+
           player.client.writeMCPE('respawn', {
               x: 0,
               y: 25,
               z: 0
           });
-          */
+
           player.client.writeMCPE('player_status', {
               status: 3
           });
