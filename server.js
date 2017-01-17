@@ -1,6 +1,7 @@
 'use strict';
 
 var pmp = require('pocket-minecraft-protocol');
+var Vector3 = require("vec3");
 var fs = require("fs");
 var processConfig =  require("./nmps/Config/processConfig.js");
 var logger = require("./nmps/Console/Console.js");
@@ -8,9 +9,9 @@ var gfs = require("./nmps/Utils/GetFileSync.js");
 var io = require("./nmps/Console/IO.js");
 var Io = new io();
 var events = require("./nmps/Events/EventEmitter.js");
-var chunk = require("./nmps/Chunk/GenerateChunk.js");
+var PrisChunk = require('prismarine-chunk')('pe_1.0');
 var commandParser = require("./nmps/Command/CommandParser.js");
-var commandManager = require("./nmps/Command/CommandManager.js");
+var commandManager = require("./nmps/Command/commandManager.js");
 var Player = require("./nmps/Player/Player.js");
 commandManager = new commandManager();
 commandParser = new commandParser();
@@ -42,27 +43,24 @@ var server = pmp.createServer({
 logger.info("Server online at "+config.Host+":"+config.Port);
 
 function genLoginWorld (chunkX, chunkZ) {
-    let chunk = new chunk();
+    let chunk = new PrisChunk();
 
     var x, y, z;
     for (x = 0; x < 16; x++) {
         for (z = 0; z < 16; z++) {
-          for (y = 0; y < 256; y++) {
-            if(y <= 20) {
-              //Bedrock layer
-              chunk.setBlockType(new Vector3(x, y, z), 3);
-              chunk.setSkyLight(new Vector3(x, y, z), 15);
-              if(y == 20) {
-                chunk.setBlockType(new Vector3(x, y, z), 2);
+            //Bedrock layer
+            chunk.setBlockType(new Vector3(x, 0, z), 3);
+            chunk.setSkyLight(new Vector3(x, 0, z), 15);
+            chunk.setBlockType(new Vector3(x, 1, z), 2);
+            chunk.setSkyLight(new Vector3(x, 1, z), 15);
+
+            //Air layer
+            continue;
+            for (y = 2; y < 256; y++) {
                 chunk.setSkyLight(new Vector3(x, y, z), 15);
-              }
-            }else
-            if(y >= 21) {
-              chunk.setSkyLight(new Vector3(x, y, z), 15);
-              //chunk.setBlockLight(new Vector3(x, y, z), 15);
-              chunk.setBiomeColor(new Vector3(x, y, z), 141, 184, 113);
+                //chunk.setBlockLight(new Vector3(x, y, z), 15);
+                chunk.setBiomeColor(new Vector3(x, y, z), 141, 184, 113);
             }
-          }
         }
     }
 
@@ -115,10 +113,10 @@ client.on("mcpe",packet => console.log(packet, false));
         player.client.writeMCPE('start_game', {
             entity_id: [0, 0],
             runtime_entity_id: [0, 0],
-            x: 0, y: 100 + 1.62, z: 0,
+            x: 0, y: 10 + 1.62, z: 0,
             unknown_1: {
                 x: 15,
-                y: 100
+                y: 25
             },
             seed: 12345,
             dimension: 0,
@@ -128,7 +126,7 @@ client.on("mcpe",packet => console.log(packet, false));
 
             spawn: {
                 x: 0,
-                y: 100 + 1.62,
+                y: 10 + 1.62,
                 z: 0
             },
 
@@ -210,6 +208,8 @@ client.on("mcpe",packet => console.log(packet, false));
 
         player.client.on('request_chunk_radius', (packet) => {
           console.log(packet);
+          //if (!player.connected_to_pc) {
+              //sconsole.log(packet);
 
           //Generate login world
           player.client.writeMCPE('chunk_radius_update', {
@@ -218,7 +218,7 @@ client.on("mcpe",packet => console.log(packet, false));
 
           for (let x = -2; x <= 2; x++) {
               for (let z = -2; z <= 2; z++) {
-                  let chunk = genLoginWorld(x, z);
+                  var chunk = genLoginWorld(x, z);
                   player.client.writeBatch([{name: 'full_chunk_data', params: {
                       chunk_x: x,
                       chunk_z: z,
