@@ -32,7 +32,7 @@ var config = processConfig.processConfig(gfs.getFileSync("./configs/nmps.conf"))
 logger.info("Loaded!");
 
 logger.info("Initializing server...");
-//Hi
+
 var server = pmp.createServer({
   host: "0.0.0.0",
   port: parseInt(process.env.PORT),
@@ -48,14 +48,16 @@ function genLoginWorld (chunkX, chunkZ) {
     for (x = 0; x < 16; x++) {
         for (z = 0; z < 16; z++) {
           for (y = 0; y < 256; y++) {
-            if(y <= 2) {
+            if(y <= 20) {
               //Bedrock layer
-              chunk.setBlockType(new Vector3(x, 0, z), 3);
-              chunk.setSkyLight(new Vector3(x, 0, z), 15);
-              chunk.setBlockType(new Vector3(x, 1, z), 2);
-              chunk.setSkyLight(new Vector3(x, 1, z), 15);
+              chunk.setBlockType(new Vector3(x, y, z), 3);
+              chunk.setSkyLight(new Vector3(x, y, z), 15);
+              if(y == 20) {
+                chunk.setBlockType(new Vector3(x, y, z), 2);
+                chunk.setSkyLight(new Vector3(x, y, z), 15);
+              }
             }
-            if(y >= 3) {
+            if(y >= 21) {
               chunk.setSkyLight(new Vector3(x, y, z), 15);
               //chunk.setBlockLight(new Vector3(x, y, z), 15);
               chunk.setBiomeColor(new Vector3(x, y, z), 141, 184, 113);
@@ -113,10 +115,10 @@ client.on("mcpe",packet => console.log(packet, false));
         player.client.writeMCPE('start_game', {
             entity_id: [0, 0],
             runtime_entity_id: [0, 0],
-            x: 0, y: 5 + 1.62, z: 0,
+            x: 0, y: 100 + 1.62, z: 0,
             unknown_1: {
                 x: 15,
-                y: 25
+                y: 100
             },
             seed: 12345,
             dimension: 0,
@@ -126,7 +128,7 @@ client.on("mcpe",packet => console.log(packet, false));
 
             spawn: {
                 x: 0,
-                y: 5 + 1.62,
+                y: 100 + 1.62,
                 z: 0
             },
 
