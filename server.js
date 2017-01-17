@@ -34,8 +34,8 @@ logger.info("Loaded!");
 logger.info("Initializing server...");
 
 var server = pmp.createServer({
-  host: "0.0.0.0",
-  port: parseInt(process.env.PORT),
+  host: config.Host,
+  port: parseInt(config.Port),
   name: 'MCPE;'+config.Name+';81 81;1.0.0;0;'+config.Slots
 });
 
