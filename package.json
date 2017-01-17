@@ -6,9 +6,6 @@
   "scripts": {
     "start": "node server.js"
   },
-  "engines": {
-    "node": "6.9.4"
-  },
   "author": "HittmanA",
   "license": "ISC",
   "dependencies": {
