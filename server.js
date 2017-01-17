@@ -39,7 +39,7 @@ var server = pmp.createServer({
   name: 'MCPE;'+config.Name+';81 81;1.0.0;0;'+config.Slots
 });
 
-logger.info("Server online at "+config.Host+":"+config.Port);
+logger.info("Server online at "+process.env.IP+":"+process.env.PORT);
 
 function genLoginWorld (chunkX, chunkZ) {
     let chunk = new chunk();
