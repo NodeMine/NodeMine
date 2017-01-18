@@ -20,6 +20,8 @@ var loader = require("./nmps/Command/CommandsLoader.js");
 loader = new loader();
 
 var playerList = {};
+playerList["players"] = {};
+playerList["list"] = [];
 //var newChunk = chunk.generateChunk();
 
 logger.info("Starting NMPS...");
@@ -72,7 +74,6 @@ server.on('connection', function(client) {
 client.on("mcpe",packet => console.log(packet, false));
 
   var player = new Player();
-  console.log(player);
   player.client = client;
 
   player.client.on("mcpe_login",packet => {
@@ -89,10 +90,6 @@ client.on("mcpe",packet => console.log(packet, false));
         }
     }
 
-    player.client.writeMCPE("player_status",{
-      status:0
-    });
-
     if (packet.username == null) {
         log('A Player with null as username tried to connect!', 1);
         return client.writeMCPE('disconnect', {
@@ -107,8 +104,9 @@ client.on("mcpe",packet => console.log(packet, false));
     player.skin = packet.SkinData;
     player.skinId = packet.SkinId;
 
-    playerList[player.username] = player;
-    player.Spawn(playerList, player.username);
+    playerList["players"][player.username] = player;
+    playerList["list"].push(player.username);
+    player.Spawn(playerList, player);
     /*
     player.client.writeMCPE('add_player', {
       uuid: player.uuid,
