@@ -2,6 +2,7 @@
 
 let Vec3 = require('vec3');
 let Vector3 = Vec3;
+var crypto = require("crypto");
 var chunk = require("../Chunk/GenerateChunk.js");
 var Spawn = function(playerList, player) {
   var serv = {};
@@ -14,7 +15,8 @@ var Spawn = function(playerList, player) {
     player.speed = new Vec3(0, 0, 0);
 
     player.entity_id = [0, 0];
-    player.secret = "1m0AAMIFIgA=";
+    var token = crypto.randomBytes(64).toString('hex');
+    player.secret = token;
 
     player.hunger = 20;
     player.health = 200;
@@ -126,26 +128,6 @@ var Spawn = function(playerList, player) {
       started: true
     });
 
-    /*
-    player.client.writeMCPE('start_game', {
-      seed: -1,
-      dimension: 0,
-      generator: 1,
-      gamemode: 1,
-      entity_id: [0,-1],
-      spawn_x: serv.spawn.x,
-      spawn_y: serv.spawn.y,
-      spawn_z: serv.spawn.z,
-      x: player.pos.x,
-      y: player.pos.y + 1.62,
-      z: player.pos.z,
-      unknown1: 1,
-      unknown2: 1,
-      unknown3: 0,
-      unknown4: ""
-    });
-    */
-
     player.client.writeMCPE('adventure_settings', {
         flags: 0x040,
         user_permission: 3
@@ -236,7 +218,7 @@ var Spawn = function(playerList, player) {
     setTimeout(function() {
       playerList["list"].forEach(function(index) {
         var target = playerList["players"][index];
-        if(target.uuid != player.uuid) {
+        if(target.uuid == player.uuid) {
           target.client.writeMCPE('add_player', {
             uuid: player.uuid,
             username: player.username,
@@ -254,25 +236,7 @@ var Spawn = function(playerList, player) {
             metadata: player.defaultMetadata,
           });
         }
-
-        // serv.log.info({
-        //   uuid: player.uuid,
-        //   username: player.name,
-        //   entity_id: player.entity_id,
-        //   x: player.pos.x,
-        //   y: player.pos.y,
-        //   z: player.pos.z,
-        //   speed_x: player.speed.x,
-        //   speed_y: player.speed.y,
-        //   speed_z: player.speed.z,
-        //   yaw: player.yaw,
-        //   head_yaw: player.headYaw,
-        //   pitch: player.pitch,
-        //   item: { blockId: 0 }//,
-        //   //metadata: player.defaultMetadata
-        // });
-
-        if(target.uuid == player.uuid) {
+        if(target.uuid != player.uuid) {
           player.client.writeMCPE('add_player', {
             uuid: target.uuid,
             username: target.username,
@@ -290,22 +254,6 @@ var Spawn = function(playerList, player) {
             metadata: target.defaultMetadata
           });
 
-          // serv.log.info({
-          //   uuid: target.uuid,
-          //   username: target.name,
-          //   entity_id: target.entity_id,
-          //   x: target.pos.x,
-          //   y: target.pos.y,
-          //   z: target.pos.z,
-          //   speed_x: target.speed.x,
-          //   speed_y: target.speed.y,
-          //   speed_z: target.speed.z,
-          //   yaw: target.yaw,
-          //   head_yaw: target.headYaw,
-          //   pitch: target.pitch,
-          //   item: { blockId: 0 }//,
-          //   //metadata: target.defaultMetadata
-          // });
         }
       });
     }, 900);

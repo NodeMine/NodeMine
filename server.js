@@ -108,13 +108,6 @@ client.on("mcpe",packet => console.log(packet, false));
     playerList["list"].push(player.username);
     player.Spawn(playerList, player);
     /*
-    player.client.writeMCPE('add_player', {
-      uuid: player.uuid,
-      username: player.username,
-
-    });
-    */
-    /*
     player.client.writeMCPE('resource_packs_info', {
             mustAccept: false,
             behahaviorpackinfos: 0,
@@ -208,7 +201,7 @@ client.on("mcpe",packet => console.log(packet, false));
         player.client.on('text', (packet) => {
           logger.info(packet);
         });
-
+        */
         events.on("SEND_MESSAGE", function(data){
           player.client.writeMCPE('text', {
             type: 1,
@@ -216,7 +209,7 @@ client.on("mcpe",packet => console.log(packet, false));
             message: ""
           });
         });
-
+        /*
         player.client.on('request_chunk_radius', (packet) => {
           //console.log(packet);
           //if (!player.connected_to_pc) {
