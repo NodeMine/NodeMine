@@ -1,6 +1,7 @@
 'use strict';
 
 var pmp = require('pocket-minecraft-protocol');
+const util = require('util')
 var Vector3 = require("vec3");
 var fs = require("fs");
 var processConfig =  require("./nmps/Config/processConfig.js");
@@ -17,10 +18,8 @@ commandManager = new commandManager();
 commandParser = new commandParser();
 var loader = require("./nmps/Command/CommandsLoader.js");
 loader = new loader();
-logger.warn("Hello");
-logger.critical("Aghhh");
-logger.error("ERROR","wow");
 
+var playerList = {};
 //var newChunk = chunk.generateChunk();
 
 logger.info("Starting NMPS...");
@@ -48,6 +47,7 @@ function genLoginWorld (chunkX, chunkZ) {
     var x, y, z;
     for (x = 0; x < 16; x++) {
         for (z = 0; z < 16; z++) {
+
             //Bedrock layer
             chunk.setBlockType(new Vector3(x, 0, z), 3);
             chunk.setSkyLight(new Vector3(x, 0, z), 15);
@@ -72,6 +72,7 @@ server.on('connection', function(client) {
 client.on("mcpe",packet => console.log(packet, false));
 
   var player = new Player();
+  console.log(player);
   player.client = client;
 
   player.client.on("mcpe_login",packet => {
@@ -103,7 +104,19 @@ client.on("mcpe",packet => console.log(packet, false));
     player.id = packet.id;
     player.username = packet.username;
     player.formatedUsername = player.username;
+    player.skin = packet.SkinData;
+    player.skinId = packet.SkinId;
 
+    playerList[player.username] = player;
+    player.Spawn(playerList, player.username);
+    /*
+    player.client.writeMCPE('add_player', {
+      uuid: player.uuid,
+      username: player.username,
+
+    });
+    */
+    /*
     player.client.writeMCPE('resource_packs_info', {
             mustAccept: false,
             behahaviorpackinfos: 0,
@@ -170,7 +183,7 @@ client.on("mcpe",packet => console.log(packet, false));
           });
 
           player.client.on('move_player', (packet) => {
-            console.log(packet);
+            //console.log(packet);
             if (!player.pos.x || player.pos.x === 0)
                 return;
 
@@ -207,7 +220,7 @@ client.on("mcpe",packet => console.log(packet, false));
         });
 
         player.client.on('request_chunk_radius', (packet) => {
-          console.log(packet);
+          //console.log(packet);
           //if (!player.connected_to_pc) {
               //sconsole.log(packet);
 
@@ -238,6 +251,6 @@ client.on("mcpe",packet => console.log(packet, false));
               status: 3
           });
         });
-
+        */
       });
     });
