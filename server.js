@@ -8,10 +8,11 @@ var logger = require("./nmps/Console/Console.js");
 var gfs = require("./nmps/Utils/GetFileSync.js");
 var io = require("./nmps/Console/IO.js");
 var Io = new io();
+var prompt = require('prompt');
 var events = require("./nmps/Events/EventEmitter.js");
 var PrisChunk = require('prismarine-chunk')('pe_1.0');
 var commandParser = require("./nmps/Command/CommandParser.js");
-var commandManager = require("./nmps/Command/commandManager.js");
+var commandManager = require("./nmps/Command/CommandManager.js");
 var Player = require("./nmps/Player/Player.js");
 commandManager = new commandManager();
 commandParser = new commandParser();
@@ -30,8 +31,23 @@ logger.info("Loading NMPS config...");
 
 var config = processConfig.processConfig(gfs.getFileSync("./configs/nmps.conf"));
 
-logger.info("Loaded!");
+if(config.Setup === '1'){
+    logger.setup("Welcome to NodeMine setup!");
+    logger.setup("Initializing Setup...");
+    prompt.get(['Max_Players', 'Server_Name'], function (err, result) {
+    if (err) { return onErr(err); }
+    logger.setup('Okay! Your Preferences are:');
+    logger.setup('Max Player Slots: ' + result.Max_Players);
+    logger.setup('Server Name: ' + result.Server_Name);
+    config.Slots = result.Max_Players;
+    config.Name = result.Server_Name;
+    config.Setup = 0;
+  });
+}
+    
 
+logger.info("Loaded!");
+logger.info(config.Setup);
 logger.info("Initializing server...");
 
 var server = pmp.createServer({

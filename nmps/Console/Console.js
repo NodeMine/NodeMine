@@ -30,5 +30,10 @@ module.exports = {
     var timestamp = require("../Time/Time.js");
     var errorMessage = require("../Error/ErrorManager");
     console.log(colors.terminal.red.bold("[" + timestamp.getTimestamp() + "][ERROR] " + errorMessage.getMessageFromError(error, info)));
+  },
+  
+  setup: function(message) {
+    var timestamp = require("../Time/Time.js");
+    console.log("[" + timestamp.getTimestamp() + "][SETUP] " + message);
   }
 }
