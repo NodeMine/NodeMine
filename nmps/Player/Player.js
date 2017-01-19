@@ -203,9 +203,9 @@ var Spawn = function(playerList, player) {
       }
 
       player.client.writeMCPE('respawn', {
-          x: 0,
-          y: 25,
-          z: 0
+          x: player.pos.x,
+          y: player.pos.y,
+          z: player.pos.z
       });
 
       player.client.writeMCPE('player_status', {
