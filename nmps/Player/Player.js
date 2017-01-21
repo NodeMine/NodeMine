@@ -68,6 +68,8 @@ var Spawn = function(playerList, player) {
       }
     ];
 
+    playerList[player.username] = player;
+
     player.client.writeMCPE('player_status', {
       status: 0
     });
@@ -119,7 +121,7 @@ var Spawn = function(playerList, player) {
 
         enable_commands: true,
         is_texturepacks_required: false,
-        secret: '1m0AAMIFIgA=',
+        secret: player.secret,
         world_name: 'temp_server'
     });
 
@@ -218,7 +220,6 @@ var Spawn = function(playerList, player) {
     setTimeout(function() {
       playerList["list"].forEach(function(index) {
         var target = playerList["players"][index];
-        console.log(target)
         if(target.uuid == player.uuid) {
           target.client.writeMCPE('add_player', {
             uuid: player.uuid,
