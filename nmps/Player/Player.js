@@ -190,6 +190,7 @@ var Spawn = function(playerList, player) {
       player.spawned = true;
     });
     var localPlayer = [];
+    console.log(player.skin)
     localPlayer.push({
       client_uuid: player.uuid,
       entity_id: player.entity_id,

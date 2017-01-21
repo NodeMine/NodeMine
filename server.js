@@ -102,9 +102,8 @@ server.on('connection', function(client) {
     player.id = packet.id;
     player.username = packet.username;
     player.formatedUsername = player.username;
-    player.skin = packet.SkinData;
+    player.skin = packet.skinData;
     player.skinId = packet.SkinId;
-
     playerList["players"][player.username] = player;
     playerList["list"].push(player.username);
     playerList["uuid"].push(player.uuid);
