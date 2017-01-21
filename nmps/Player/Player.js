@@ -192,8 +192,8 @@ var Spawn = function(playerList, player) {
 
     setTimeout(function() {
       all._writeAll('player_list', {
-        add: 0,
-        entries:
+        type: 0,
+        entries: playerList.uuid
       }, playerList);
       playerList["list"].forEach(function(index) {
         var target = playerList["players"][index];
