@@ -81,18 +81,6 @@ var Spawn = function(playerList, player) {
             resourcepackinfos: 0
         });
 
-    player.client.writeMCPE('move_player', {
-      entity_id: [0,-1],
-      x: player.pos.x,
-      y: player.pos.y + 1.62,
-      z: player.pos.z,
-      yaw: player.yaw,
-      head_yaw: player.headYaw,
-      pitch: player.pitch,
-      mode: 0,
-      on_ground: 1
-    });
-
     player.client.writeMCPE('start_game', {
         entity_id: [0, 0],
         runtime_entity_id: [0, 0],
@@ -158,26 +146,10 @@ var Spawn = function(playerList, player) {
       z: serv.spawn.z
     });
 
-    player.client.writeMCPE('move_player', {
-      entity_id: [0,-1],
-      x: player.pos.x,
-      y: player.pos.y + 1.62,
-      z: player.pos.z,
-      yaw: player.yaw,
-      head_yaw: player.headYaw,
-      pitch: player.pitch,
-      mode: 0,
-      on_ground: 1
-    });
-
     player.client.writeMCPE('respawn', {
       x: serv.spawn.x,
       y: serv.spawn.y,
       z: serv.spawn.z
-    });
-
-    player.client.writeMCPE('player_status', {
-        status: 3
     });
 
     player.client.on('move_player', (packet) => {
@@ -210,12 +182,6 @@ var Spawn = function(playerList, player) {
         }}]);
        }
       }
-
-      player.client.writeMCPE('respawn', {
-          x: player.pos.x,
-          y: player.pos.y,
-          z: player.pos.z
-      });
 
       player.client.writeMCPE('player_status', {
           status: 3
