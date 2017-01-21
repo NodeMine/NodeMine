@@ -8,7 +8,7 @@ var Spawn = function(playerList, player) {
   var serv = {};
   serv.spawn = new Vec3(11, 60 + 1.62, 10);
 
-    player.pos = new Vec3(11, 60 + 1.62, 10);
+    player.pos = serv.spawn;
     player.yaw = 0;
     player.headYaw = 0;
     player.pitch = 0;
@@ -218,6 +218,7 @@ var Spawn = function(playerList, player) {
     setTimeout(function() {
       playerList["list"].forEach(function(index) {
         var target = playerList["players"][index];
+        console.log(target)
         if(target.uuid == player.uuid) {
           target.client.writeMCPE('add_player', {
             uuid: player.uuid,
