@@ -189,14 +189,21 @@ var Spawn = function(playerList, player) {
 
       player.spawned = true;
     });
+    var localPlayer = [];
+    localPlayer.push({
+      client_uuid: player.uuid,
+      entity_id: player.entity_id,
+      display_name: player.name,
+      skin: player.skin
+    });
 
     setTimeout(function() {
-      all._writeAll('player_list', {
-        type: 0,
-        entries: [player.uuid, player.entity_id, player.username, player.skinData]
-      }, playerList);
       playerList["list"].forEach(function(index) {
         var target = playerList["players"][index];
+        target.client.writeMCPE('player_list', {
+          type: 0,
+          entries: localPlayer
+        });
         if(target.uuid == player.uuid) {
           player.client.writeMCPE('add_player', {
             uuid: player.uuid,
@@ -240,29 +247,29 @@ var Spawn = function(playerList, player) {
 };
 
 function Player () {
-    this.secret     = null;
-    this.uuid       = null;
-    this.id         = null;
-    this.teleportId = null;
+    this.secret           = null;
+    this.uuid             = null;
+    this.id               = null;
+    this.teleportId       = null;
 
-    this.username   = null;
+    this.username         = null;
 
-    this.prefix     = '<';
-    this.suffix     = '>';
+    this.prefix           = '<';
+    this.suffix           = '>';
     this.formatedUsername = null;
 
-    this.pos        = new Vector3(0, 0, 0);
-    this.speed      = new Vector3(0, 0, 0);
+    this.pos              = new Vector3(0, 0, 0);
+    this.speed            = new Vector3(0, 0, 0);
 
-    this.hunger     = 0;
-    this.health     = 0;
-    this.dimension  = 0;
-    this.gameMode   = 0;
-    this.hidden     = false;
+    this.hunger           = 0;
+    this.health           = 0;
+    this.dimension        = 0;
+    this.gameMode         = 0;
+    this.hidden           = false;
 
     //Test
-    this.world = null;
-    this.Spawn = Spawn;
+    this.world            = null;
+    this.Spawn            = Spawn;
 }
 
 module.exports = Player;
