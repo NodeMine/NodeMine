@@ -125,6 +125,12 @@ var Spawn = function(playerList, player) {
         world_name: 'temp_server'
     });
 
+    player._client.writeMCPE('set_spawn_position', {
+      x: serv.spawn.x,
+      y: serv.spawn.y,
+      z: serv.spawn.z
+    });
+
     player.client.writeMCPE('set_time', {
       time: 0,
       started: true
@@ -143,12 +149,6 @@ var Spawn = function(playerList, player) {
         x: 0,
         y: 25,
         z: 0
-    });
-
-    player.client.writeMCPE('set_spawn_position', {
-      x: serv.spawn.x,
-      y: serv.spawn.y,
-      z: serv.spawn.z
     });
 
     player.client.writeMCPE('move_player', {
@@ -221,7 +221,7 @@ var Spawn = function(playerList, player) {
       playerList["list"].forEach(function(index) {
         var target = playerList["players"][index];
         if(target.uuid == player.uuid) {
-          target.client.writeMCPE('add_player', {
+          player.client.writeMCPE('add_player', {
             uuid: player.uuid,
             username: player.username,
             entity_id: player.entity_id,
@@ -239,7 +239,7 @@ var Spawn = function(playerList, player) {
           });
         }
         if(target.uuid != player.uuid) {
-          player.client.writeMCPE('add_player', {
+          target.client.writeMCPE('add_player', {
             uuid: target.uuid,
             username: target.username,
             entity_id: target.entity_id,
