@@ -192,9 +192,9 @@ var Spawn = function(playerList, player) {
 
     setTimeout(function() {
       all._writeAll('player_list', {
-        type: 0,
-        entries: playerList.uuid
-      });
+        add: 0,
+        entries:
+      }, playerList);
       playerList["list"].forEach(function(index) {
         var target = playerList["players"][index];
         if(target.uuid == player.uuid) {
