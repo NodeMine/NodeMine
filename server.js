@@ -22,6 +22,7 @@ loader = new loader();
 var playerList = {};
 playerList["players"] = {};
 playerList["list"] = [];
+playerList["uuid"] = [];
 //var newChunk = chunk.generateChunk();
 
 logger.info("Starting NMPS...");
@@ -71,7 +72,7 @@ function genLoginWorld (chunkX, chunkZ) {
 
 server.on('connection', function(client) {
 
-client.on("mcpe",packet => console.log(packet, false));
+//client.on("mcpe",packet => console.log(packet, false));
 
   var player = new Player();
   player.client = client;
@@ -106,6 +107,7 @@ client.on("mcpe",packet => console.log(packet, false));
 
     playerList["players"][player.username] = player;
     playerList["list"].push(player.username);
+    playerList["uuid"].push(player.uuid);
     player.Spawn(playerList, player);
     /*
     player.client.writeMCPE('resource_packs_info', {
@@ -208,6 +210,12 @@ client.on("mcpe",packet => console.log(packet, false));
             source: data,
             message: ""
           });
+        });
+        events.on("PLAYER_LIST_UPDATE", function(newList){
+          playerList = newList;
+        });
+        events.on("GET_PLAYER_LIST", function(){
+          events.emit("PLAYER_LIST", playerList);
         });
         /*
         player.client.on('request_chunk_radius', (packet) => {

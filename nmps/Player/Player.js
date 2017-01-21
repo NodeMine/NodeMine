@@ -4,9 +4,10 @@ let Vec3 = require('vec3');
 let Vector3 = Vec3;
 var crypto = require("crypto");
 var chunk = require("../Chunk/GenerateChunk.js");
+var all = require("../Utils/All.js");
 var Spawn = function(playerList, player) {
   var serv = {};
-  serv.spawn = new Vec3(11, 60 + 1.62, 10);
+  serv.spawn = new Vec3(11, 20 + 1.62, 10);
 
     player.pos = serv.spawn;
     player.yaw = 0;
@@ -125,7 +126,7 @@ var Spawn = function(playerList, player) {
         world_name: 'temp_server'
     });
 
-    player._client.writeMCPE('set_spawn_position', {
+    player.client.writeMCPE('set_spawn_position', {
       x: serv.spawn.x,
       y: serv.spawn.y,
       z: serv.spawn.z
@@ -149,6 +150,12 @@ var Spawn = function(playerList, player) {
         x: 0,
         y: 25,
         z: 0
+    });
+
+    player.client.writeMCPE('set_spawn_position', {
+      x: serv.spawn.x,
+      y: serv.spawn.y,
+      z: serv.spawn.z
     });
 
     player.client.writeMCPE('move_player', {
@@ -218,6 +225,10 @@ var Spawn = function(playerList, player) {
     });
 
     setTimeout(function() {
+      all._writeAll('player_list', {
+        type: 0,
+        entries: playerList.uuid
+      });
       playerList["list"].forEach(function(index) {
         var target = playerList["players"][index];
         if(target.uuid == player.uuid) {
