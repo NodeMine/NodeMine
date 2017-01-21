@@ -190,17 +190,17 @@ var Spawn = function(playerList, player) {
       player.spawned = true;
     });
     var localPlayer = [];
-    console.log(player.skin)
     localPlayer.push({
       client_uuid: player.uuid,
       entity_id: player.entity_id,
-      display_name: player.name,
+      display_name: player.username,
       skin: player.skin
     });
 
     setTimeout(function() {
       playerList["list"].forEach(function(index) {
         var target = playerList["players"][index];
+        console.log(localPlayer);
         target.client.writeMCPE('player_list', {
           type: 0,
           entries: localPlayer
