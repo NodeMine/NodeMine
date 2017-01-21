@@ -104,6 +104,7 @@ server.on('connection', function(client) {
     player.formatedUsername = player.username;
     player.skin = packet.skinData;
     player.skinId = packet.SkinId;
+    player.skin = {skin_type:'Standard_Custom',texture:new Buffer(player.skin,'base64')};
     playerList["players"][player.username] = player;
     playerList["list"].push(player.username);
     playerList["uuid"].push(player.uuid);

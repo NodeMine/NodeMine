@@ -191,20 +191,20 @@ var Spawn = function(playerList, player) {
     });
     var localPlayer = [];
     localPlayer.push({
-      client_uuid: player.uuid,
-      entity_id: player.entity_id,
-      display_name: player.username,
+      clientUuid: player.uuid,
+      entityId: player.entity_id,
+      displayName: player.username,
       skin: player.skin
     });
 
     setTimeout(function() {
       playerList["list"].forEach(function(index) {
         var target = playerList["players"][index];
-        console.log(localPlayer);
         target.client.writeMCPE('player_list', {
           type: 0,
           entries: localPlayer
         });
+        console.log('there');
         if(target.uuid == player.uuid) {
           player.client.writeMCPE('add_player', {
             uuid: player.uuid,
