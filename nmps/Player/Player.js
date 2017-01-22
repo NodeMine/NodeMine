@@ -200,6 +200,7 @@ var Spawn = function(playerList, player) {
     setTimeout(function() {
       playerList["list"].forEach(function(index) {
         var target = playerList["players"][index];
+        console.log(localPlayer)
         target.client.writeMCPE('player_list', {
           type: 0,
           entries: localPlayer
@@ -244,7 +245,7 @@ var Spawn = function(playerList, player) {
         }
       });
     }, 900);
-
+    console.log("\n-----------------------\n")
 };
 
 function Player () {

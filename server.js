@@ -107,7 +107,7 @@ server.on('connection', function(client) {
     player.skin = {skin_type:'Standard_Custom',texture:new Buffer(player.skin,'base64')};
     playerList["players"][player.username] = player;
     playerList["list"].push(player.username);
-    playerList["uuid"].push(player.uuid);
+    playerList["add"]= [];
     player.Spawn(playerList, player);
     /*
     player.client.writeMCPE('resource_packs_info', {
