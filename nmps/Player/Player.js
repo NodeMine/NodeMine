@@ -69,21 +69,19 @@ var Spawn = function(playerList, player, players) {
       }
     ];
 
-    playerList[player.username] = player;
-
     player.client.writeMCPE('player_status', {
       status: 0
     });
-
+    /*
     player.client.writeMCPE('resource_packs_info', {
             mustAccept: false,
             behahaviorpackinfos: 0,
             resourcepackinfos: 0
         });
-
+        */
     player.client.writeMCPE('start_game', {
-        entity_id: [0, 0],
-        runtime_entity_id: [0, 0],
+        entity_id: [player.entity_id,player.entity_id],
+        runtime_entity_id: [player.entity_id,player.entity_id],
         x: 0, y: 10 + 1.62, z: 0,
         unknown_1: {
             x: 15,
@@ -114,12 +112,6 @@ var Spawn = function(playerList, player, players) {
         world_name: 'temp_server'
     });
 
-    player.client.writeMCPE('set_spawn_position', {
-      x: serv.spawn.x,
-      y: serv.spawn.y,
-      z: serv.spawn.z
-    });
-
     player.client.writeMCPE('set_time', {
       time: 0,
       started: true
@@ -141,10 +133,14 @@ var Spawn = function(playerList, player, players) {
     });
 
     player.client.writeMCPE('set_spawn_position', {
-      x: serv.spawn.x,
-      y: serv.spawn.y,
-      z: serv.spawn.z
+      unknown_1: 0,
+      coordinates: {
+        x: serv.spawn.x,
+        y: serv.spawn.y,
+        z: serv.spawn.z
+      }
     });
+
 
     player.client.writeMCPE('respawn', {
       x: serv.spawn.x,
@@ -189,7 +185,7 @@ var Spawn = function(playerList, player, players) {
 
       player.spawned = true;
     });
-    
+
     // var localPlayer = [];
     // localPlayer.push({
     //   clientUuid: player.uuid,
@@ -198,7 +194,7 @@ var Spawn = function(playerList, player, players) {
     //   skin: player.skin
     // });
 
-    
+
 
     setTimeout(function() {
       players.forEach(function(target) {
@@ -220,8 +216,8 @@ var Spawn = function(playerList, player, players) {
           player.client.writeMCPE('add_player', {
             uuid: player.uuid,
             username: player.username,
-            entity_id: player.entity_id,
-            runtime_entity_id: 0,
+            entity_id: [player.entity_id,player.entity_id],
+            runtime_entity_id: [player.entity_id,player.entity_id],
             x: player.pos.x,
             y: player.pos.y,
             z: player.pos.z,
@@ -240,8 +236,8 @@ var Spawn = function(playerList, player, players) {
           target.client.writeMCPE('add_player', {
             uuid: target.uuid,
             username: target.username,
-            entity_id: target.entity_id,
-            runtime_entity_id: 0,
+            entity_id: [player.entity_id,player.entity_id],
+            runtime_entity_id: [player.entity_id,player.entity_id],
             x: target.pos.x,
             y: target.pos.y,
             z: target.pos.z,

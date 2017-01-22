@@ -111,15 +111,15 @@ server.on('connection', function(client) {
     player.entity_id = entityId;
     player.username = packet.username;
     player.formatedUsername = player.username;
-    player.skin = packet.skinData;
-    player.skinId = packet.SkinId;
+    player.skinData = packet.skinData;
+    player.skinId = packet.skinId;
+    player.skin = {skin_type: packet.skinId, texture: new Buffer(packet.skinData, 'base64') }
     player.pos = new Vec3(11, 20 + 1.62, 10);
     player.yaw = 0;
     player.headYaw = 0;
     player.pitch = 0;
     player.speed = new Vec3(0, 0, 0);
-    player.skin = {skin_type:'Standard_Custom',texture:new Buffer(player.skin,'base64')};
-    
+
     players.push(player);
 
     // playerList["players"][player.username] = player;
@@ -135,7 +135,9 @@ server.on('connection', function(client) {
 
     player.Spawn(serverList, player, players);
     console.log(serverList);
+    console.log("==============")
     console.log(players);
+    console.log("==============")
 
     entityId++;
 
