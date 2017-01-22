@@ -5,8 +5,7 @@ let Vector3 = Vec3;
 var crypto = require("crypto");
 var chunk = require("../Chunk/GenerateChunk.js");
 var all = require("../Utils/All.js");
-
-var Spawn = function(playerList, player) {
+var Spawn = function(playerList, player, players) {
   var serv = {};
   serv.spawn = new Vec3(11, 20 + 1.62, 10);
 
@@ -190,28 +189,39 @@ var Spawn = function(playerList, player) {
 
       player.spawned = true;
     });
+    
+    // var localPlayer = [];
+    // localPlayer.push({
+    //   clientUuid: player.uuid,
+    //   entityId: player.entity_id,
+    //   displayName: player.username,
+    //   skin: player.skin
+    // });
 
-    playerList.add.push({
-      clientUuid: player.uuid,
-      entityId: player.entity_id,
-      displayName: player.username,
-      skin: player.skin
-    });
+    
 
     setTimeout(function() {
-      playerList["list"].forEach(function(index) {
-        var target = playerList["players"][index];
-        console.log(playerList.add)
+      players.forEach(function(target) {
+
+
+        //var target = playerList["players"][index];
+
+        //console.log(localPlayer)
+
         target.client.writeMCPE('player_list', {
           type: 0,
-          entries: playerList.add
+          entries: playerList
         });
+
+
         console.log('there');
+
         if(target.uuid == player.uuid) {
           player.client.writeMCPE('add_player', {
             uuid: player.uuid,
             username: player.username,
             entity_id: player.entity_id,
+            runtime_entity_id: 0,
             x: player.pos.x,
             y: player.pos.y,
             z: player.pos.z,
@@ -221,15 +231,17 @@ var Spawn = function(playerList, player) {
             yaw: player.yaw,
             head_yaw: player.headYaw,
             pitch: player.pitch,
-            item: { block_id: 0 },
+            item: { blockId: 0 },
             metadata: player.defaultMetadata,
           });
         }
+
         if(target.uuid != player.uuid) {
           target.client.writeMCPE('add_player', {
             uuid: target.uuid,
             username: target.username,
             entity_id: target.entity_id,
+            runtime_entity_id: 0,
             x: target.pos.x,
             y: target.pos.y,
             z: target.pos.z,
@@ -239,8 +251,8 @@ var Spawn = function(playerList, player) {
             yaw: target.yaw,
             head_yaw: target.headYaw,
             pitch: target.pitch,
-            item: { block_id: 0 },
-            metadata: target.defaultMetadata
+            item: { blockId: 0 },
+            metadata: player.defaultMetadata
           });
 
         }

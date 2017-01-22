@@ -12,14 +12,22 @@ var Io = new io();
 var events = require("./nmps/Events/EventEmitter.js");
 var PrisChunk = require('prismarine-chunk')('pe_1.0');
 var commandParser = require("./nmps/Command/CommandParser.js");
-var commandManager = require("./nmps/Command/commandManager.js");
+var commandManager = require("./nmps/Command/CommandManager.js");
 var Player = require("./nmps/Player/Player.js");
 commandManager = new commandManager();
 commandParser = new commandParser();
 var loader = require("./nmps/Command/CommandsLoader.js");
+let Vec3 = require('vec3');
 loader = new loader();
 
+
+var serverList = [];
+var entityId = 0;
+var players = [];
+
 var playerList = {};
+
+
 playerList["players"] = {};
 playerList["list"] = [];
 playerList["uuid"] = [];
@@ -100,15 +108,37 @@ server.on('connection', function(client) {
 
     player.uuid = packet.uuid;
     player.id = packet.id;
+    player.entity_id = entityId;
     player.username = packet.username;
     player.formatedUsername = player.username;
     player.skin = packet.skinData;
     player.skinId = packet.SkinId;
+    player.pos = new Vec3(11, 20 + 1.62, 10);
+    player.yaw = 0;
+    player.headYaw = 0;
+    player.pitch = 0;
+    player.speed = new Vec3(0, 0, 0);
     player.skin = {skin_type:'Standard_Custom',texture:new Buffer(player.skin,'base64')};
-    playerList["players"][player.username] = player;
-    playerList["list"].push(player.username);
-    playerList["add"]= [];
-    player.Spawn(playerList, player);
+    
+    players.push(player);
+
+    // playerList["players"][player.username] = player;
+    // playerList["list"].push(player.username);
+    // playerList["add"]= [];
+
+    serverList.push({
+      clientUuid: player.uuid,
+      entityId: player.entity_id,
+      displayName: player.username,
+      skin: player.skin
+    });
+
+    player.Spawn(serverList, player, players);
+    console.log(serverList);
+    console.log(players);
+
+    entityId++;
+
     /*
     player.client.writeMCPE('resource_packs_info', {
             mustAccept: false,
