@@ -1,0 +1,22 @@
+{
+  "name": "nodemine",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "4.1.1"
+  },
+  "author": "HittmanA",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "jwt-simple": "^0.5.1",
+    "minecraft-data": "^2.11.0",
+    "pocket-minecraft-protocol": "^2.2.3",
+    "prismarine-chunk": "^1.4.0",
+    "vec3": "^0.1.3"
+  }
+}
