@@ -73,9 +73,9 @@ var Spawn = function(playerList, player, players) {
     });
 
     player.client.writeMCPE('resource_packs_info', {
-            mustAccept: false,
-            behahaviorpackinfos: 0,
-            resourcepackinfos: 0
+            must_accept: false,
+            behavior_pack_entries: [],
+            resource_pack_entries: []
         });
 
     player.client.writeMCPE('start_game', {
