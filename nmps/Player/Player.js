@@ -4,7 +4,6 @@ let Vec3 = require('vec3');
 let Vector3 = Vec3;
 var crypto = require("crypto");
 var chunk = require("../Chunk/GenerateChunk.js");
-var all = require("../Utils/All.js");
 var Spawn = function(playerList, player, players) {
   var serv = {};
   serv.spawn = new Vec3(11, 20 + 1.62, 10);
@@ -72,13 +71,13 @@ var Spawn = function(playerList, player, players) {
     player.client.writeMCPE('player_status', {
       status: 0
     });
-    /*
+
     player.client.writeMCPE('resource_packs_info', {
             mustAccept: false,
             behahaviorpackinfos: 0,
             resourcepackinfos: 0
         });
-        */
+
     player.client.writeMCPE('start_game', {
         entity_id: [player.entity_id,player.entity_id],
         runtime_entity_id: [player.entity_id,player.entity_id],
